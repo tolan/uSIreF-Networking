@@ -1,0 +1,3 @@
+TODO plan
+- for HTTP protocol resolve POST data
+- message plugins (e.g. callback on status, JSON receiver/sender)
