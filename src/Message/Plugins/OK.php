@@ -3,6 +3,7 @@
 namespace uSIreF\Networking\Message\Plugins;
 
 use uSIreF\Networking\Interfaces\Message\{IMessage, IPlugin};
+use SplSubject;
 
 /**
  * This file defines class for message plugin.
@@ -14,16 +15,14 @@ class OK implements IPlugin {
     /**
      * Updates plugin when observed message is changed.
      *
-     * @param IMessage $message Message instance
+     * @param SplSubject $subject Message instance
      *
-     * @return IMessage
+     * @return void
      */
-    public function update(IMessage $message): IMessage {
-        if ($message->getStatus() === IMessage::STATUS_READ_COMPLETE) {
-            $message->getResponse()->data('OK');
+    public function update(SplSubject $subject): void {
+        if ($subject->getStatus() === IMessage::STATUS_READ_COMPLETE) {
+            $subject->getResponse()->data('OK');
         }
-
-        return $message;
     }
 
 }

@@ -5,6 +5,7 @@ namespace uSIreF\Networking\Message\Abstracts;
 use uSIreF\Networking\Interfaces\Message\{IMessage, IPlugin};
 use uSIref\Networking\Interfaces\Protocol\{IRequest, IResponse, IParser, IBuilder};
 use uSIref\Networking\Interfaces\Stream\IConnection;
+use SplObserver;
 
 /**
  * This file defines abstract class for Message.
@@ -87,14 +88,31 @@ abstract class AMessage implements IMessage {
     /**
      * Adds plugin to message which will be notified.
      *
-     * @param IPlugin $plugin Message plugin instance
+     * @param SplObserver $observer Message plugin instance
      *
-     * @return IMessage
+     * @return void
      */
-    public function addPlugin(IPlugin $plugin): IMessage {
-        $this->_plugins[] = $plugin;
+    public function attach(SplObserver $observer): void {
+        $this->_plugins[] = $observer;
+    }
 
-        return $this;
+    /**
+     * Removes plugin from the message.
+     *
+     * @param SplObserver $observer Message plugin instance
+     *
+     * @return void
+     */
+    public function detach(SplObserver $observer): void {
+        $plugins = $this->_plugins;
+
+        foreach ($plugins as $key => $plugin) {
+            if ($observer === $plugin) {
+                unset($plugins[$key]);
+            }
+        }
+
+        $this->_plugins = array_values($plugins);
     }
 
     /**

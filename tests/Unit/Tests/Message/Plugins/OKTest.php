@@ -29,7 +29,7 @@ class OKTest extends TestCase {
             ->method('getStatus')
             ->willReturn(IMessage::STATUS_OPEN);
 
-        $this->assertInstanceOf(IMessage::class, $plugin->update($message));
+        $this->assertNull($plugin->update($message));
     }
 
     /**
@@ -53,7 +53,7 @@ class OKTest extends TestCase {
             ->method('getStatus')
             ->willReturn(IMessage::STATUS_READ_COMPLETE);
 
-        $this->assertInstanceOf(IMessage::class, $plugin->update($message));
+        $this->assertNull($plugin->update($message));
     }
 
 }

@@ -100,7 +100,7 @@ class Factory implements IFactory {
      */
     private function _addPlugins(IMessage $message): IMessage {
         foreach ($this->_plugins as $plugin) {
-            $message->addPlugin($plugin);
+            $message->attach($plugin);
         }
 
         return $message;

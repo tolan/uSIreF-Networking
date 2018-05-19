@@ -53,7 +53,7 @@ class ServerTest extends TestCase {
             });
 
         $messageA->expects($this->exactly(2))
-            ->method('update')
+            ->method('notify')
             ->willReturnSelf();
 
         $messageA->expects($this->exactly(2))
@@ -81,7 +81,7 @@ class ServerTest extends TestCase {
             ->willReturn($message);
 
         $message ->expects($this->exactly(2))
-            ->method('update')
+            ->method('notify')
             ->willThrowException($exception);
 
         $server = new Server($stream);

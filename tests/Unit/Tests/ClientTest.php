@@ -31,7 +31,7 @@ class ClientTest extends TestCase {
             ->willReturn($message);
 
         $message->expects($this->exactly(1))
-            ->method('update');
+            ->method('notify');
 
         $client = new Client($stream);
 

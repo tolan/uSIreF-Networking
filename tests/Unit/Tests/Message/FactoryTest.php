@@ -27,7 +27,7 @@ class FactoryTest extends TestCase {
         $this->assertInstanceOf(Factory::class, $factory->addPlugin($plugin));
 
         $connection = $this->createMock(Stream\IConnection::class);
-        $factory->createIncomming($connection)->update();
+        $factory->createIncomming($connection)->notify();
     }
 
     /**

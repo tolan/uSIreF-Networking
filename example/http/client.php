@@ -18,7 +18,7 @@ function callClient() {
 
     $message = $client->send($request, 10);
     for ($i = 0; $i < 10 && !$message->isCompleted(); $i++) {
-        $message->update();
+        $message->notify();
         usleep(20 * 1000);
     }
 

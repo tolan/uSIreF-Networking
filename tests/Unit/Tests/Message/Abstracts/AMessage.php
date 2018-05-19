@@ -22,12 +22,10 @@ class AMessage extends Abstracts\AMessage {
     /**
      * It updates message like a status, etc.
      *
-     * @return IMessage
+     * @return void
      */
-    public function update(): IMessage {
+    public function notify(): void {
         $this->setStatus($this->_nextStatus);
-
-        return $this;
     }
 
     /**

@@ -40,7 +40,10 @@ class Client {
      * @return IMessage
      */
     public function send(IRequest $request, float $timeout = 0): IMessage {
-        return $this->_stream->connect($request, $timeout)->update();
+        $message = $this->_stream->connect($request, $timeout);
+        $message->notify();
+
+        return $message;
     }
 
 }

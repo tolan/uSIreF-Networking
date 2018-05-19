@@ -62,7 +62,7 @@ class IncommingTest extends TestCase {
 
         foreach ($flow as $expected) {
             $this->assertEquals($expected, $message->getStatus());
-            $message->update();
+            $message->notify();
         }
     }
 

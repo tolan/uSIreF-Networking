@@ -15,21 +15,42 @@ use uSIreF\Networking\Interfaces\Message\{IMessage, IPlugin};
 class AMessageTest extends TestCase {
 
     /**
-     * Success test for method addPlugin.
+     * Success test for method attach.
      *
      * @return void
      */
-    public function testAddPlugin() {
+    public function testAttach() {
         $message = $this->_createMessage()->nextStatus(IMessage::STATUS_OPEN);
         $plugin  = $this->createMock(IPlugin::class);
         $plugin->expects($this->exactly(1))
             ->method('update');
 
-        $this->assertInstanceOf(IMessage::class, $message->addPlugin($plugin));
-        $message->update()
-            ->nextStatus(IMessage::STATUS_READING)
-            ->update()
-            ->update();
+        $this->assertNull($message->attach($plugin));
+        $message->notify();
+        $message->nextStatus(IMessage::STATUS_READING);
+        $message->notify();
+        $message->notify();
+    }
+
+    /**
+     * Success test for method detach.
+     *
+     * @return void
+     */
+    public function testDetach() {
+        $message = $this->_createMessage()->nextStatus(IMessage::STATUS_OPEN);
+        $plugin  = $this->createMock(IPlugin::class);
+        $plugin->expects($this->exactly(1))
+            ->method('update');
+
+        $this->assertNull($message->attach($plugin));
+        $message->notify();
+        $message->nextStatus(IMessage::STATUS_READING);
+        $message->notify();
+        $message->nextStatus(IMessage::STATUS_READ_COMPLETE);
+
+        $this->assertNull($message->detach($plugin));
+        $message->notify();
     }
 
     /**
@@ -40,7 +61,7 @@ class AMessageTest extends TestCase {
     public function testGetStatus() {
         $message = $this->_createMessage();
         $this->assertEquals(IMessage::STATUS_OPEN, $message->getStatus());
-        $message->nextStatus(IMessage::STATUS_READING)->update();
+        $message->nextStatus(IMessage::STATUS_READING)->notify();
         $this->assertEquals(IMessage::STATUS_READING, $message->getStatus());
     }
 
@@ -93,11 +114,11 @@ class AMessageTest extends TestCase {
     public function testIsCompleted() {
         $message = $this->_createMessage()->nextStatus(IMessage::STATUS_OPEN);
         $this->assertFalse($message->isCompleted());
-        $message->update();
+        $message->notify();
         $this->assertFalse($message->isCompleted());
         $message->nextStatus(IMessage::STATUS_COMPLETED);
         $this->assertFalse($message->isCompleted());
-        $message->update();
+        $message->notify();
         $this->assertTrue($message->isCompleted());
     }
 

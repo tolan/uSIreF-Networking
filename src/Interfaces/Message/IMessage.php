@@ -3,13 +3,15 @@
 namespace uSIreF\Networking\Interfaces\Message;
 
 use uSIreF\Networking\Interfaces\Protocol\{IRequest, IResponse};
+use SplSubject;
+use SplObserver;
 
 /**
  * This file defines interface for message.
  *
  * @author Martin Kovar <mkovar86@gmail.com>
  */
-interface IMessage {
+interface IMessage extends SplSubject {
 
     const STATUS_OPEN           = 'open';
     const STATUS_READING        = 'reading';
@@ -22,11 +24,27 @@ interface IMessage {
     /**
      * Adds plugin to message which will be notified.
      *
-     * @param IPlugin $plugin Message plugin instance
+     * @param SplObserver $observer Message plugin instance
+     *
+     * @return void
+     */
+    public function attach(SplObserver $observer): void;
+
+    /**
+     * Removes plugin from the message.
+     *
+     * @param SplObserver $observer Message plugin instance
+     *
+     * @return void
+     */
+    public function detach(SplObserver $observer): void;
+
+    /**
+     * It updates message like a status, etc.
      *
      * @return IMessage
      */
-    public function addPlugin(IPlugin $plugin): IMessage;
+    public function notify(): void;
 
     /**
      * Returns that the timeout is reached.
@@ -55,13 +73,6 @@ interface IMessage {
      * @return IMessage
      */
     public function close(): IMessage;
-
-    /**
-     * It updates message like a status, etc.
-     *
-     * @return IMessage
-     */
-    public function update(): IMessage;
 
     /**
      * Returns assigned request.

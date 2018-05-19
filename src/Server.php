@@ -82,7 +82,7 @@ class Server {
 
             foreach ($this->_messages as $key => $message) { /* @var $message IMessage */
                 try {
-                    $message->update();
+                    $message->notify();
                     if ($message->isCompleted() || $message->isTimeoutReached()) {
                         unset($this->_messages[$key]);
                         $message->close();

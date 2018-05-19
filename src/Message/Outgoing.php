@@ -2,8 +2,6 @@
 
 namespace uSIreF\Networking\Message;
 
-use uSIreF\Networking\Interfaces\Message\IMessage;
-
 /**
  * This file defines class for outgoing message (to server from client).
  *
@@ -14,9 +12,9 @@ class Outgoing extends Abstracts\AMessage {
     /**
      * It updates message like a status, etc.
      *
-     * @return IMessage
+     * @return void
      */
-    public function update(): IMessage {
+    public function notify(): void {
         $parser  = $this->getParser();
         $builder = $this->getBuilder();
         if ($builder->isReadCompleted() === true && $builder->isWriteCompleted() === false) {
@@ -28,8 +26,6 @@ class Outgoing extends Abstracts\AMessage {
         if ($builder->isWriteCompleted() === true && $parser->isReadCompleted() === true) {
             $this->setStatus(self::STATUS_COMPLETED);
         }
-
-        return $this;
     }
 
 }
